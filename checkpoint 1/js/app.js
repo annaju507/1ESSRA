@@ -51,7 +51,7 @@ function validarCPF(cpf) {
 }
 
 // 4. Máscaras Dinâmicas (CPF e Celular)
-campoCpf.addEventListener('input', function() {
+campoCpf.addEventListener('input', function () {
     let valor = campoCpf.value.replace(/\D/g, '');
     valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
     valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
@@ -59,7 +59,7 @@ campoCpf.addEventListener('input', function() {
     campoCpf.value = valor;
 });
 
-campoCelular.addEventListener('input', function() {
+campoCelular.addEventListener('input', function () {
     let valor = campoCelular.value.replace(/\D/g, '');
     valor = valor.replace(/^(\d{2})(\d)/g, '($1) $2');
     valor = valor.replace(/(\d{5})(\d)/, '$1-$2');
@@ -67,7 +67,7 @@ campoCelular.addEventListener('input', function() {
 });
 
 // 6. Processamento do Formulário ao Clicar no Botão
-btnCadastrar.addEventListener('click', function() {
+btnCadastrar.addEventListener('click', function () {
     // Array com os campos estritamente OBRIGATÓRIOS (Celular mantido fora)
     const camposObrigatorios = [campoNome, campoCpf, campoEmail, campoArtista];
     let temCampoVazio = false;
@@ -105,7 +105,18 @@ btnCadastrar.addEventListener('click', function() {
         artista: campoArtista.value.trim()
     };
 
+    const conteudoComprovante = `=== PRÉ-CADASTRO DE INGRESSO ROCK IN RIO ===
+Nome: ${dadosReserva.nome}
+CPF: ${dadosReserva.cpf}
+E-mail: ${dadosReserva.email}
+Celular: ${dadosReserva.celular || 'Não informado'}
+Atração Selecionada: ${dadosReserva.artista}
+===========================================`;
 
+     const nomeArquivo =
+        `ingresso_${dadosReserva.nome.replace(/\s+/g, '_')}.txt`;
+
+    gerarArquivoTxt(conteudoComprovante, nomeArquivo);
     // Mensagem de Sucesso na Tela
     divResultado.className = 'msg-sucesso';
     divResultado.innerText = `Intenção de compra registrada com sucesso para: ${dadosReserva.artista}! Comprovante exportado.`;
